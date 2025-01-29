@@ -81,7 +81,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>easybank/${project.name}:v1</name>
+						<name>ahilachokkalingam/${project.name}:v1</name>
 					</image>
 				</configuration>
 			</plugin>
