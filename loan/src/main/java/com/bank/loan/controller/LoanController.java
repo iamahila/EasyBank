@@ -1,6 +1,7 @@
 package com.bank.loan.controller;
 
 import com.bank.loan.business.LoanBusiness;
+import com.bank.loan.dto.LoanCustomerSupportDTO;
 import com.bank.loan.dto.LoanDTO;
 import com.bank.loan.dto.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,9 @@ public class LoanController {
 
     @Autowired
     private LoanBusiness loanBusiness;
+
+    @Autowired
+    private LoanCustomerSupportDTO loanCustomerSupportDTO;
 
     @Operation(
             description = "Create loan using mobile number",
@@ -98,6 +102,21 @@ public class LoanController {
         ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "Deleted: "+isDeleted);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseDTO);
+    }
+
+    @Operation(
+            description = "fetch card customer support information",
+            summary = "fetch card customer support"
+
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status OK"
+    )
+    @GetMapping("/loan-support-info")
+    public ResponseEntity<LoanCustomerSupportDTO> getCustomerSupport(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(loanCustomerSupportDTO);
     }
 
 }
