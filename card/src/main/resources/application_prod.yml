@@ -1,0 +1,12 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+cards:
+  message: "Welcome to EazyBank cards manager Info PROD "
+  contactDetails:
+    name: "Sandra Harald - Director"
+    email: "sandra@eazybank.com"
+  onCallSupport:
+    - (617) 432-2356
+    - (936) 564-8721

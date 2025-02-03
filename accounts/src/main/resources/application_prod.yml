@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+accounts:
+  message: "Welcome to EazyBank accounts manager Info prod"
+  contactDetails:
+    name: "Reine Aishwarya - Director"
+    email: "aishwarya@eazybank.com"
+  onCallSupport:
+    - (453) 392-4829
+    - (236) 203-0384
