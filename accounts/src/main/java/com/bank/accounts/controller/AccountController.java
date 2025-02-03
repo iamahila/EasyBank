@@ -2,6 +2,7 @@ package com.bank.accounts.controller;
 
 import com.bank.accounts.business.AccountBusiness;
 import com.bank.accounts.dto.CustomerDTO;
+import com.bank.accounts.dto.CustomerSupportDTO;
 import com.bank.accounts.dto.ResponseDTO;
 import com.bank.accounts.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,9 @@ public class AccountController {
 
     @Autowired
     private AccountBusiness accountBusiness;
+
+    @Autowired
+    private CustomerSupportDTO customerSupportDTO;
 
     @Operation(
             description = "Create Account using customer DTO",
@@ -98,6 +102,21 @@ public class AccountController {
         ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "Deleted: "+isDeleted);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseDTO);
+    }
+
+    @Operation(
+            description = "fetch Account customer support information",
+            summary = "fetch customer support"
+
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status OK"
+    )
+    @GetMapping("/account-support-info")
+    public ResponseEntity<CustomerSupportDTO> getCustomerSupport(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(customerSupportDTO);
     }
 
 }

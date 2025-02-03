@@ -1,6 +1,7 @@
 package com.bank.card.controller;
 
 import com.bank.card.business.CardBusiness;
+import com.bank.card.dto.CardCustomerDTO;
 import com.bank.card.dto.CardDTO;
 import com.bank.card.dto.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,9 @@ public class CardController {
 
     @Autowired
     private CardBusiness cardBusiness;
+
+    @Autowired
+    private CardCustomerDTO cardCustomerDTO;
 
     @Operation(
             description = "Create card using mobile number",
@@ -98,6 +102,21 @@ public class CardController {
         ResponseDTO responseDTO = new ResponseDTO(HttpStatus.OK, "Deleted: "+isDeleted);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseDTO);
+    }
+
+    @Operation(
+            description = "fetch card customer support information",
+            summary = "fetch card customer support"
+
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status OK"
+    )
+    @GetMapping("/card-support-info")
+    public ResponseEntity<CardCustomerDTO> getCustomerSupport(){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cardCustomerDTO);
     }
 
 }
