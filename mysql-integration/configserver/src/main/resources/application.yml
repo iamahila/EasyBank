@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    active: git
+   # active: native
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/iamahila/EasyBank-ConfigServer.git
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+        #native:
+          #search-locations: "classpath:/config"
+          #search-locations: "file:///C://Users//ahila//Documents//Projects//2025//ConfigServer//config"
+
+server:
+  port: 8071
+encrypt:
+  key: "A6FFCDB9959387BDA21A4CBAA7F6A"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true

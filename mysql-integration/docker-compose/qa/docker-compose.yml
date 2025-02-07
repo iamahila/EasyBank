@@ -1,0 +1,42 @@
+services:
+  configserver:
+    image: "ahilachokkalingam/configserver:s6"
+    container_name: "configserver-ms"
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-fields.yml
+      service: microservice-base-config
+  accounts:
+    image: "ahilachokkalingam/accounts:v1"
+    container_name: "accounts-ms"
+    ports:
+      - "8080:8080"
+    extends:
+      file: common-fields.yml
+      service: microservice-config
+  card:
+    image: "ahilachokkalingam/card:v1"
+    container_name: "card-ms"
+    ports:
+      - "9000:9000"
+    extends:
+      file: common-fields.yml
+      service: microservice-config
+  loan:
+    image: "ahilachokkalingam/loan:s6"
+    container_name: "loan-ms"
+    ports:
+      - "8090:8090"
+    extends:
+      file: common-fields.yml
+      service: microservice-config
+networks:
+  easybank:
+    driver: "bridge"
