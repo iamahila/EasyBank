@@ -1,0 +1,31 @@
+services:
+  network-config:
+    networks:
+      - easybank
+
+  microservice-base-config:
+    extends:
+      service: network-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  microservice-config-server:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+  microservice-complete-config:
+    extends:
+      service: microservice-config-server
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka"
+      SPRING_PROFILES_ACTIVE: "qa"
+    depends_on:
+      eurekaserver:
+        condition: service_healthy

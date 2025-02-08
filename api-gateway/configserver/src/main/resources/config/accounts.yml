@@ -1,0 +1,8 @@
+accounts:
+  message: "Welcome to EazyBank accounts manager Info local "
+  contactDetails:
+    name: "John Doe - Assistant Manager"
+    email: "john@eazybank.com"
+  onCallSupport:
+    - (555) 555-1234
+    - (555) 523-1345
