@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +32,8 @@ public class LoanController {
 
     @Autowired
     private LoanCustomerSupportDTO loanCustomerSupportDTO;
+
+    private Logger logger = LoggerFactory.getLogger(LoanController.class);
 
     @Operation(
             description = "Create loan using mobile number",
@@ -60,9 +64,11 @@ public class LoanController {
             description = "Http Status OK"
     )
     @GetMapping("/get-user-by-mobile")
-    public ResponseEntity<LoanDTO> getLoanByMobileNumber(@RequestParam
+    public ResponseEntity<LoanDTO> getLoanByMobileNumber(@RequestHeader("easybank-correlation-id") String correlationId, @RequestParam
                                                                      @Pattern(regexp = "(^$|[0-9]{10})", message = "Not a valid mobile number")
                                                                      String mobileNumber){
+        logger.debug("correlation id in loan controller: "+ correlationId);
+
         LoanDTO loanDTO = loanBusiness.getCustomerData(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(loanDTO);

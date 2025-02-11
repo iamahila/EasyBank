@@ -125,7 +125,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>ahilachokkalingam/${project.name}:v1</image>
+						<image>ahilachokkalingam/${project.name}:v2</image>
 					</to>
 				</configuration>
 			</plugin>

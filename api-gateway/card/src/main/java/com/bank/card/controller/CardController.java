@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +32,8 @@ public class CardController {
 
     @Autowired
     private CardCustomerDTO cardCustomerDTO;
+
+    private final Logger logger = LoggerFactory.getLogger(CardController.class);
 
     @Operation(
             description = "Create card using mobile number",
@@ -60,9 +64,10 @@ public class CardController {
             description = "Http Status OK"
     )
     @GetMapping("/get-user-by-mobile")
-    public ResponseEntity<CardDTO> getCardByMobileNumber(@RequestParam
+    public ResponseEntity<CardDTO> getCardByMobileNumber(@RequestHeader("easybank-correlation-id") String correlationId, @RequestParam
                                                                      @Pattern(regexp = "(^$|[0-9]{10})", message = "Not a valid mobile number")
                                                                      String mobileNumber){
+        logger.debug("correlation id in accounts controller: "+ correlationId);
         CardDTO cardDTO = cardBusiness.getCustomerData(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(cardDTO);

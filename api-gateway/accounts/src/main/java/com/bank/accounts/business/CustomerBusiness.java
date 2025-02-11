@@ -24,7 +24,7 @@ public class CustomerBusiness {
 
     private LoanFeignClient loanFeignClient;
 
-    public CustomerInfoDTO getCustomerInfo(String mobileNumber){
+    public CustomerInfoDTO getCustomerInfo(String correlationId, String mobileNumber){
         CustomerInfoDTO customerInfoDTO = new CustomerInfoDTO();
 
         CustomerEntity customer = accountService.getCustomerData(mobileNumber)
@@ -38,9 +38,9 @@ public class CustomerBusiness {
 
         AccountDTO accountDTO = AccountsMapper.mapToAccountsDto(account, new AccountDTO());
 
-        LoanDTO loanDTO = loanFeignClient.getLoanByMobileNumber(mobileNumber).getBody();
+        LoanDTO loanDTO = loanFeignClient.getLoanByMobileNumber(correlationId, mobileNumber).getBody();
 
-        CardDTO cardDTO = cardsFeignClient.getCardByMobileNumber(mobileNumber).getBody();
+        CardDTO cardDTO = cardsFeignClient.getCardByMobileNumber(correlationId, mobileNumber).getBody();
 
         customerDTO.setAccountDTO(accountDTO);
         customerInfoDTO.setCustomerDTO(customerDTO);

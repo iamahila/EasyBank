@@ -27,3 +27,9 @@ info:
     name: gateway MS
     description: gateway related information for easy bank
     version: 1.0.0
+
+logging:
+  level:
+    com:
+      easybank:
+        gatewayserver: DEBUG
