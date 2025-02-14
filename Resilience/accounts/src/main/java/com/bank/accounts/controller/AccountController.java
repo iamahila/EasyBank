@@ -5,6 +5,7 @@ import com.bank.accounts.dto.CustomerDTO;
 import com.bank.accounts.dto.CustomerSupportDTO;
 import com.bank.accounts.dto.ResponseDTO;
 import com.bank.accounts.service.AccountService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Fallback;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -135,6 +137,20 @@ public class AccountController {
         customerSupportDTO1.setMessage("Fall back message");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerSupportDTO1);
+    }
+
+    @RateLimiter(name = "buildRateLimit", fallbackMethod = "getBuildVersionFallBack")
+    @GetMapping("/build-version")
+    public ResponseEntity<String> getBuildVersion(){
+        String value = "Build version from Actual Method is : 1.0";
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(value);
+    }
+
+    public ResponseEntity<String> getBuildVersionFallBack(Throwable throwable){
+        String value = "Build version from Fallback Method is : 1.1";
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(value);
     }
 
 }

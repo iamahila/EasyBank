@@ -7,10 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -33,7 +36,10 @@ public class GatewayserverApplication {
 						.uri("lb://ACCOUNTS"))
 				.route(p-> p.path("/easybank/cards/**")
 						.filters(f-> f.rewritePath("/easybank/cards/(?<segment>.*)","/${segment}")
-								.addResponseHeader("X-response-header", LocalDateTime.now().toString()))
+								.addResponseHeader("X-response-header", LocalDateTime.now().toString())
+								.requestRateLimiter(config -> config.setRateLimiter(rateLimiter())
+										.setKeyResolver(userKeyResolver()))
+						)
 						.uri("lb://CARDS"))
 				.route(p-> p.path("/easybank/loans/**")
 						.filters(f-> f.rewritePath("/easybank/loans/(?<segment>.*)","/${segment}")
@@ -52,4 +58,17 @@ public class GatewayserverApplication {
 				.circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
 				.timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(4)).build()).build());
 	}
+
+	@Bean
+	public RedisRateLimiter rateLimiter(){
+		//return new RedisRateLimiter(0,0,1);
+		return new RedisRateLimiter(1,1,1);
+	}
+
+	@Bean
+	public KeyResolver userKeyResolver(){
+		return exchange -> Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst("user"))
+				.defaultIfEmpty("anonymous");
+	}
+
 }
