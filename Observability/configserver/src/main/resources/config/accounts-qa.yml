@@ -1,0 +1,8 @@
+accounts:
+  message: "Welcome to EazyBank accounts manager Info qa "
+  contactDetails:
+    name: "Smitha Ray - Manager"
+    email: "smitha@eazybank.com"
+  onCallSupport:
+    - (666) 265-3765
+    - (666) 734-8371

@@ -1,0 +1,8 @@
+cards:
+  message: "Welcome to EazyBank cards manager Info local "
+  contactDetails:
+    name: "Dragos Lech - Assistant Manager"
+    email: "dragos@eazybank.com"
+  onCallSupport:
+    - (412) 419-3491
+    - (915) 382-1932

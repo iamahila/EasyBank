@@ -1,0 +1,30 @@
+services:
+  network-config:
+    networks:
+      - easybank
+
+  microservice-base-config:
+    extends:
+      service: network-config
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-2.11.0.jar"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4318
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+
+  microservice-config-server:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+
+  microservice-complete-config:
+    extends:
+      service: microservice-config-server
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka"
+      SPRING_PROFILES_ACTIVE: "default"
